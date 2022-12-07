@@ -90,8 +90,8 @@ void drawVLine(uint8_t x, int8_t start_y, int8_t end_y, uint8_t intensity, Canva
 
 void setupDisplay(Canvas* canvas) {
     memset(zbuffer, 0xff, 128);
-    display_buf = (uint8_t*)canvas_get_buffer(canvas);
-    //display_buf = u8g2_GetBufferPtr(&canvas->fb);
+    //display_buf = (uint8_t*)canvas_get_buffer(canvas);
+    display_buf = u8g2_GetBufferPtr(&canvas->fb);
 }
 
 void drawBitmap(
@@ -103,13 +103,17 @@ void drawBitmap(
     uint16_t color,
     Canvas* const canvas) {
     UNUSED(color);
-    canvas_draw_icon_bitmap(canvas, x, y, w, h, i);
+    UNUSED(w);
+    UNUSED(h);
+    canvas_draw_icon(canvas, x, y, i);
 }
 
 void drawText(uint8_t x, uint8_t y, uint8_t num, Canvas* const canvas) {
-    char buf[4];
-    itoa(num, buf, 10);
-    drawTextSpace(x, y, buf, 1, canvas);
+    FuriString* text;
+    text = furi_string_alloc();
+    furi_string_printf(text, "%d", num);
+    canvas_draw_str(canvas, x, y, furi_string_get_cstr(text));
+    furi_string_free(text);
 }
 
 void drawTextSpace(int8_t x, int8_t y, char* txt, uint8_t space, Canvas* const canvas) {
