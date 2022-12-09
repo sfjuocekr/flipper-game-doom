@@ -112,7 +112,9 @@ void drawText(uint8_t x, uint8_t y, uint8_t num, Canvas* const canvas) {
     FuriString* text;
     text = furi_string_alloc();
     furi_string_printf(text, "%d", num);
-    canvas_draw_str(canvas, x, y, furi_string_get_cstr(text));
+    char buf[4];
+    strcpy(buf, (char*)furi_string_get_cstr(text));
+    drawTextSpace(x, y, buf, 1, canvas);
     furi_string_free(text);
 }
 
