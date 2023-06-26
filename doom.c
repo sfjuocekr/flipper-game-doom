@@ -278,6 +278,8 @@ void fire(PluginState* const plugin_state) {
             continue;
         }
 
+	dolphin_deed(DolphinDeedGameWin);
+
         Coords transform = translateIntoView(&(plugin_state->entity[i].pos), plugin_state);
         if(fabs(transform.x) < 20 && transform.y > 0) {
             uint8_t damage = (double)fmin(
@@ -766,11 +768,13 @@ void loopIntro(Canvas* const canvas) {
 
 static void render_callback(Canvas* const canvas, void* ctx) {
     PluginState* plugin_state = ctx;
-    
+
     furi_mutex_acquire(plugin_state->mutex, FuriWaitForever);
     if(plugin_state == NULL) {
         return;
     }
+
+    dolphin_deed(DolphinDeedPluginStart);
 
     if(plugin_state->init) setupDisplay(canvas);
 
